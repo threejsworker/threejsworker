@@ -1,0 +1,11 @@
+{
+  "name": "bluebird-poll",
+  "version": "0.0.1",
+  "description": "a poller for bluebird",
+  "main": "index.js",
+  "repository": "",
+  "author": "gero3",
+  "dependencies": {
+    "bluebird": "^2.10.0"
+  }
+}
