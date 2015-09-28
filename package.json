@@ -5,10 +5,13 @@
   "main": "server.js",
   "repository": "",
   "author": "gero3",
-  "engines" : { "node" : "4.0.0" },
+  "engines": {
+    "node": "4.0.0"
+  },
   "dependencies": {
     "bluebird": "^2.10.1",
     "bluebird-poll": "file:local_modules/poll",
+    "bower": "^1.5.3",
     "express": "^4.13.3",
     "mime-types": "^2.1.7",
     "mkdirp": "^0.5.1",

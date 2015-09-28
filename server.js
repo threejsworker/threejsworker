@@ -5,8 +5,8 @@ var app = express();
 
 require("./lib/githubdatafetch");
 
-
-
+app.use(express.static('static'));
+/*
 app.get('/', function (req, res) {
   res.sendFile(path.resolve(__dirname , "./static/index.html"));
 });
@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
 app.get('/pullrequests.html', function (req, res) {
   res.sendFile(path.resolve(__dirname , "./static/pullrequests.html"));
 });
-
+*/
 app.get('/api/pullrequests', function (req, res) {
   
   var result = "";

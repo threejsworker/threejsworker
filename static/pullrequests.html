@@ -4,6 +4,13 @@
 		<title>ThreejsWorker</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+		<script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+		<link rel="import" href="bower_components/sortable-table/sortable-table.html">
+		<link rel="stylesheet" href="bower_components/sortable-table/css/bootstrap.css" shim-shadowdom>
+		
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	</head>
 
 	<body>
@@ -11,20 +18,28 @@
         <div>
             The following are the active PRs.
         </div> 
-        <div id="Prlist">
-            
-        </div>
+        <sortable-table id="Table" class="bootstrap" sortColumn="id" sortDescending="true" filterTemplate="simpleFilters">
+            <sortable-column name="id">id</sortable-column>
+	        <sortable-column name="state">state</sortable-column>
+	        <sortable-column name="title">title</sortable-column>
+	        <sortable-column >Examples</sortable-column>
+        </sortable-table>
         <script>
+            var data = [];
             var setPullrequests = function(pullrequests){
-                
-                var str = "<ul>";
-                for(var i = 0; i<pullrequests.length;i++){
-                    var pr = pullrequests[i];
-                    str+= "<li><a href='/api/pullrequests/" + pr.id + "/examples/index.html' >" + pr.id + " : " + pr.title + "<\a></li>";
-                }
-                str+= "</ul>";
-                document.getElementById("Prlist").innerHTML = str;
+                data = pullrequests
             };
+
+            window.addEventListener('polymer-ready', function(){
+            	document.getElementById('Table').data = data
+            	setPullrequests = function(pullrequests){
+            	    data = pullrequests
+            	    document.getElementById('Table').filters.push({ column: 'state', op:"=", value: 'open' });
+            	    document.getElementById('Table').data = data
+            	};
+            });
+
+            
             //setPullrequests([{link:"test",id:"test",name:"testerdetest"}]);
         </script>
         <script src="/api/pullrequests?callback=setPullrequests"></script>
