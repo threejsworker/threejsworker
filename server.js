@@ -31,15 +31,22 @@ app.get('/api/pullrequests', function (req, res) {
 
 app.get('/api/pullrequests/:id/*', function (req, res, next) {
   var pr = require("./lib/pullrequests").get( req.params.id);
-  require("./lib/trees").get(pr.sha).then(function(tree){
-    var path = req.params[0];
-    if (tree.paths[path]){
-      res.set('Content-Type', mimeType.lookup(path));
-      require("./lib/blobs").get(tree.paths[path]).then(function(blob) {res.send(blob)});
-    } else {
-      next();
-    }
-  });
+  if (!pr){
+    
+    require("./lib/github").getPullRequests(req.params.id);
+    res.send("This needs to be uploaded. Give me 20 seconds to load it.");
+  } else {
+  
+    require("./lib/trees").get(pr.sha).then(function(tree){
+      var path = req.params[0];
+      if (tree.paths[path]){
+        res.set('Content-Type', mimeType.lookup(path));
+        require("./lib/blobs").get(tree.paths[path]).then(function(blob) {res.send(blob)});
+      } else {
+        next();
+      }
+    });
+  };
 });
 
 app.get("*", function (req, res, next) {

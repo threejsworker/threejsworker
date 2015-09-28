@@ -39,13 +39,13 @@
         <script>
             var data = [];
             var setPullrequests = function(pullrequests){
-                data = pullrequests
+                data = pullrequests;
             };
 
             window.addEventListener('polymer-ready', function(){
             	updateData("Open");
             	setPullrequests = function(pullrequests){
-            	    data = pullrequests
+            	    data = pullrequests;
             	    updateData("Open");
             	};
             });
@@ -58,20 +58,20 @@
             }
             
             function updateData(filter) {
-                toggle("#btn" + filter)
+                var returnValue = [];
+                var i;
+                toggle("#btn" + filter);
                 if (filter === "All"){
                     document.getElementById('Table').data = data;
                 } else if(filter === "Open") {
-                    var returnValue = []
-                    for (var i= 0; i<  data.length;i++){
+                    for (i= 0; i<  data.length;i++){
                         if (data[i].state === "open"){
                             returnValue.push(data[i]);
                         }
                     }
                     document.getElementById('Table').data = returnValue;
                 } else if(filter === "Closed") {
-                    var returnValue = []
-                    for (var i= 0; i<  data.length;i++){
+                    for (i= 0; i<data.length;i++){
                         if (data[i].state === "closed"){
                             returnValue.push(data[i]);
                         }
