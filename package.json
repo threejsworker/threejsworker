@@ -11,11 +11,13 @@
   "dependencies": {
     "bluebird": "^2.10.1",
     "bluebird-poll": "file:local_modules/poll",
-    "bower": "^1.5.3",
     "express": "^4.13.3",
     "mime-types": "^2.1.7",
     "mkdirp": "^0.5.1",
     "request": "^2.62.0",
     "uglify-js": "^2.4.24"
+  },
+  "devDependencies": {
+    "bower": "^1.5.3"
   }
 }
