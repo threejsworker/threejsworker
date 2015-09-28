@@ -22,7 +22,12 @@
             <sortable-column name="id">id</sortable-column>
 	        <sortable-column name="state">state</sortable-column>
 	        <sortable-column name="title">title</sortable-column>
-	        <sortable-column >Examples</sortable-column>
+	        <sortable-column name="id" cellTemplate="examplesTemplate">Examples</sortable-column>
+	        <template id="examplesTemplate">
+        		<td style="text-align:left">
+        			<a href="/api/pullrequests/{{value}}/examples/index.html">Goto Examples</a>
+        		</td>
+        	</template>
         </sortable-table>
         <script>
             var data = [];
@@ -34,7 +39,6 @@
             	document.getElementById('Table').data = data
             	setPullrequests = function(pullrequests){
             	    data = pullrequests
-            	    document.getElementById('Table').filters.push({ column: 'state', op:"=", value: 'open' });
             	    document.getElementById('Table').data = data
             	};
             });
