@@ -15,10 +15,6 @@ app.get('/pullrequests.html', function (req, res) {
   res.sendFile(path.resolve(__dirname , "./static/pullrequests.html"));
 });
 
-app.get('/pullrequests.html', function (req, res) {
-  res.sendFile(path.resolve(__dirname , "./static/pullrequests.html"));
-});
-
 app.get('/api/pullrequests', function (req, res) {
   
   var result = "";
@@ -33,17 +29,22 @@ app.get('/api/pullrequests', function (req, res) {
   res.send(result);
 });
 
-app.get('/api/pullrequests/:id/*', function (req, res) {
+app.get('/api/pullrequests/:id/*', function (req, res, next) {
   var pr = require("./lib/pullrequests").get( req.params.id);
   var tree = require("./lib/trees").get(pr.sha);
   var path = req.params[0];
-  res.set('Content-Type', mimeType.lookup(path));
-  require("./lib/blobs").get(tree.paths[path]).then(function(blob) {res.send(blob)});
+  if (tree.paths[path]){
+    res.set('Content-Type', mimeType.lookup(path));
+    require("./lib/blobs").get(tree.paths[path]).then(function(blob) {res.send(blob)});
+  } else {
+    next();
+  }
+});
+
+app.get("*", function (req, res, next) {
+  res.send("Not Found");
 });
 
 var server = app.listen( process.env.PORT,process.env.IP, function () {
-  var host = server.address().address;
-  var port = server.address().port;
-
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log("ThreejsWorker started");
 });
