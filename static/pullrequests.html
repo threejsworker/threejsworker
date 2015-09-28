@@ -10,18 +10,25 @@
 		<link rel="import" href="bower_components/sortable-table/sortable-table.html">
 		<link rel="stylesheet" href="bower_components/sortable-table/css/bootstrap.css" shim-shadowdom>
 		
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	</head>
 
 	<body>
         <h1>PullRequests</h1>
-        <div>
-            The following are the active PRs.
-        </div> 
+
+        
+        <div class="btn-group" role="group" aria-label="State">
+          <button id="btnAll" type="button" class="btn btn-primary" data-toggle="button">All</button>
+          <button id="btnOpen" type="button" class="btn btn-primary active" data-toggle="button">Open</button>
+          <button id="btnClosed" type="button" class="btn btn-primary" data-toggle="button">Closed</button>
+        </div>
         <sortable-table id="Table" class="bootstrap" sortColumn="id" sortDescending="true" filterTemplate="simpleFilters">
-            <sortable-column name="id">id</sortable-column>
-	        <sortable-column name="state">state</sortable-column>
-	        <sortable-column name="title">title</sortable-column>
+            <sortable-column name="id">ID</sortable-column>
+	        <sortable-column name="state">Open/Closed</sortable-column>
+	        <sortable-column name="title">Title</sortable-column>
+	        <sortable-column name="created" datatype="date">Created</sortable-column>
+	        <sortable-column name="updated" datatype="date">Updated</sortable-column>
 	        <sortable-column name="id" cellTemplate="examplesTemplate">Examples</sortable-column>
 	        <template id="examplesTemplate">
         		<td style="text-align:left">
@@ -36,12 +43,48 @@
             };
 
             window.addEventListener('polymer-ready', function(){
-            	document.getElementById('Table').data = data
+            	updateData("Open");
             	setPullrequests = function(pullrequests){
             	    data = pullrequests
-            	    document.getElementById('Table').data = data
+            	    updateData("Open");
             	};
             });
+            
+            function toggle(btn) {
+                $("#btnAll").removeClass("active");
+                $("#btnOpen").removeClass("active");
+                $("#btnClosed").removeClass("active");
+                $(this).addClass("active");
+            }
+            
+            function updateData(filter) {
+                toggle("#btn" + filter)
+                if (filter === "All"){
+                    document.getElementById('Table').data = data;
+                } else if(filter === "Open") {
+                    var returnValue = []
+                    for (var i= 0; i<  data.length;i++){
+                        if (data[i].state === "open"){
+                            returnValue.push(data[i]);
+                        }
+                    }
+                    document.getElementById('Table').data = returnValue;
+                } else if(filter === "Closed") {
+                    var returnValue = []
+                    for (var i= 0; i<  data.length;i++){
+                        if (data[i].state === "closed"){
+                            returnValue.push(data[i]);
+                        }
+                    }
+                    document.getElementById('Table').data = returnValue;
+                }
+            }
+            
+            
+            $("#btnAll").on( "click", function(){ updateData("All");} );
+            $("#btnOpen").on( "click", function(){ updateData("Open");} );
+            $("#btnClosed").on( "click", function(){ updateData("Closed");} );
+            
 
             
             //setPullrequests([{link:"test",id:"test",name:"testerdetest"}]);
