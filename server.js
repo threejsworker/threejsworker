@@ -1,3 +1,5 @@
+require("bluebird").longStackTraces();
+
 var express = require('express');
 var path = require('path');
 var mimeType = require("mime-types");
