@@ -27,8 +27,9 @@ This is all that's needed to start
 
 The config.js file contains all configuration nessecary.
 
-# SINGLE_PROCESS
+- SINGLE_PROCESS
 
-Start the jobs together with the server. That way, the jobs don't need to be started by them self.
-Current jobs are: 
+ Start the jobs together with the server. That way, the jobs don't need to be started by them self.
+ 
+ Current jobs are: 
  - [githubdatafetch](https://github.com/threejsworker/threejsworker/blob/master/lib/jobs/githubdatafetch.js)
