@@ -1,8 +1,10 @@
 ###ThreejsWorker
 
+## Introduction
+
 This checks if there are any pullrequest updates on the three.js repository and if their are any changes, rebuild the three.js build and show it on the website.
 
-## requirements
+## Requirements
 
  - [Node.js 4.0](https://nodejs.org/en/) & NPM (comes with node.js)
  - [A github authenication token](https://github.com/settings/tokens) (needed in config.js file)
