@@ -11,6 +11,7 @@
   "dependencies": {
     "bluebird": "^2.10.1",
     "bluebird-poll": "file:local_modules/poll",
+    "bluebird-retry": "^0.5.1",
     "express": "^4.13.3",
     "mime-types": "^2.1.7",
     "mkdirp": "^0.5.1",
