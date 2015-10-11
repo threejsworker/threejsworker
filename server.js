@@ -6,12 +6,6 @@ var path = require('path');
 var mimeType = require("mime-types");
 var app = express();
 
-if (config.SINGLE_PROCESS) {
-
-  require("./lib/jobs/githubdatafetch");
-
-};
-
 app.use(express.static('static'));
 
 app.get('/api/pullrequests', function (req, res) {
@@ -58,3 +52,10 @@ app.get("*", function (req, res, next) {
 var server = app.listen( process.env.PORT,process.env.IP, function () {
   console.log("ThreejsWorker started");
 });
+
+
+if (config.SINGLE_PROCESS) {
+
+  require("./lib/jobs/githubdatafetch");
+
+};
