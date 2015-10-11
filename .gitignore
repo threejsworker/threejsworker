@@ -1,0 +1,9 @@
+.hgignore
+node_modules
+.c9
+.DS_Store
+Thumbs.db
+
+# special for this repository
+storage/*
+config.js
