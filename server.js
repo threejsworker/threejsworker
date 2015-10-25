@@ -49,8 +49,10 @@ app.get("*", function (req, res, next) {
   res.send("Not Found");
 });
 
-var server = app.listen( process.env.PORT,process.env.IP, function () {
+var server = app.listen( config.PORT || process.env.PORT, config.IP || process.env.IP, function (){
+  
   console.log("ThreejsWorker started");
+  
 });
 
 
