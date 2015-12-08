@@ -4,53 +4,49 @@
 		<title>ThreejsWorker</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-		<script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-		<link rel="import" href="bower_components/sortable-table/sortable-table.html">
-		<link rel="stylesheet" href="bower_components/sortable-table/css/bootstrap.css" shim-shadowdom>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/bootstrap-table.min.css">
 		
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-table.min.js"></script>
 	</head>
 
 	<body>
         <h1>PullRequests</h1>
 
-        
-        <div class="btn-group" role="group" aria-label="State">
+        <div id="toolbar">
           <button id="btnAll" type="button" class="btn btn-primary" data-toggle="button">All</button>
           <button id="btnOpen" type="button" class="btn btn-primary active" data-toggle="button">Open</button>
           <button id="btnClosed" type="button" class="btn btn-primary" data-toggle="button">Closed</button>
         </div>
-        <sortable-table id="Table" class="bootstrap" sortColumn="id" sortDescending="true" filterTemplate="simpleFilters">
-            <sortable-column name="id">ID</sortable-column>
-	        <sortable-column name="state">Open/Closed</sortable-column>
-	        <sortable-column name="title">Title</sortable-column>
-	        <sortable-column name="created" datatype="date">Created</sortable-column>
-	        <sortable-column name="updated" datatype="date">Updated</sortable-column>
-	        <sortable-column name="id" cellTemplate="examplesTemplate">Examples</sortable-column>
-	        <template id="examplesTemplate">
-        		<td style="text-align:left">
-        			<a href="/viewpullrequest.html#{{value}}">Goto Examples</a>
-        		</td>
-        	</template>
-        </sortable-table>
+        <table id="table" data-toolbar="#toolbar">
+            <thead>
+            <tr>
+                <th data-field="id" data-sortable="true">ID</th>
+                <th data-field="state" data-sortable="true">Open/Closed</th>
+                <th data-field="title" data-sortable="true">Title</th>
+	            <th data-field="created" datatype="date" data-sortable="true"> Created</th>
+	            <th data-field="updated" datatype="date" data-sortable="true">Updated</th>
+	            <th data-field="id" data-formatter="examplesFormatter">Examples</sortable-column>
+            </tr>
+            </thead>
+        </table>
         <script>
-            var data = [];
+            var data;
+            var $table = $('#table');
             var setPullrequests = function(pullrequests){
+                $table.bootstrapTable({data: pullrequests});
                 data = pullrequests;
+                updateData("All")
             };
-
-            window.addEventListener('polymer-ready', function(){
-            	updateData("Open");
-            	setPullrequests = function(pullrequests){
-            	    data = pullrequests;
-            	    updateData("Open");
-            	};
-            });
             
-            function toggle(btn) {
+            var examplesFormatter = function(id) {
+                return "<a href='/viewpullrequest.html#" + id + "'>Goto Examples</a>";
+            };
+        
+             function toggle(btn) {
                 $("#btnAll").removeClass("active");
                 $("#btnOpen").removeClass("active");
                 $("#btnClosed").removeClass("active");
@@ -62,32 +58,30 @@
                 var i;
                 toggle("#btn" + filter);
                 if (filter === "All"){
-                    document.getElementById('Table').data = data;
+                    $table.bootstrapTable('load', data);
                 } else if(filter === "Open") {
                     for (i= 0; i<  data.length;i++){
                         if (data[i].state === "open"){
                             returnValue.push(data[i]);
                         }
                     }
-                    document.getElementById('Table').data = returnValue;
+                    $table.bootstrapTable('load', returnValue);
                 } else if(filter === "Closed") {
                     for (i= 0; i<data.length;i++){
                         if (data[i].state === "closed"){
                             returnValue.push(data[i]);
                         }
                     }
-                    document.getElementById('Table').data = returnValue;
+                    $table.bootstrapTable('load', returnValue);
                 }
+                
             }
             
             
             $("#btnAll").on( "click", function(){ updateData("All");} );
             $("#btnOpen").on( "click", function(){ updateData("Open");} );
             $("#btnClosed").on( "click", function(){ updateData("Closed");} );
-            
-
-            
-            //setPullrequests([{link:"test",id:"test",name:"testerdetest"}]);
+        
         </script>
         <script src="/api/pullrequests?callback=setPullrequests"></script>
 	</body>
