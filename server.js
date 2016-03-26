@@ -11,6 +11,7 @@ app.use(express.static('static'));
 
 require("./lib/init").then(function(){
   
+
   app.get('/api/pullrequests', function (req, res) {
     require("./lib/pullrequests").getAllPullRequests().then(function(json){
         
@@ -44,9 +45,19 @@ require("./lib/init").then(function(){
           var path = req.params[0];
           if (tree.paths[path]){
             if (compression){
-              res.setHeader("Content-Encoding", "gzip");
-              res.setHeader('Content-Type', mimeType.lookup(path));
-              require("./lib/blobs").getCompressed(tree.paths[path]).then(function(blob) {res.send(blob)});
+               require("./lib/blobs").getCompressed(tree.paths[path]).then(function(blob) {
+                res.setHeader("Content-Encoding", "gzip");
+                res.setHeader('Content-Type', mimeType.lookup(path));
+                res.send(blob);
+              }).catch(function(){
+                res.setHeader('Content-Type', mimeType.lookup(path));
+                require("./lib/blobs").get(tree.paths[path]).then(function(blob) {
+                  res.send(blob);
+                }).catch(function(){
+                  next();
+                });
+                
+              });
             } else {
               
               res.setHeader('Content-Type', mimeType.lookup(path));
@@ -74,9 +85,19 @@ require("./lib/init").then(function(){
           var path = req.params[0];
           if (tree.paths[path]){
             if (compression){
-              res.setHeader("Content-Encoding", "gzip");
-              res.setHeader('Content-Type', mimeType.lookup(path));
-              require("./lib/blobs").getCompressed(tree.paths[path]).then(function(blob) {res.send(blob)});
+              require("./lib/blobs").getCompressed(tree.paths[path]).then(function(blob) {
+                res.setHeader("Content-Encoding", "gzip");
+                res.setHeader('Content-Type', mimeType.lookup(path));
+                res.send(blob);
+              }).catch(function(){
+                res.setHeader('Content-Type', mimeType.lookup(path));
+                require("./lib/blobs").get(tree.paths[path]).then(function(blob) {
+                  res.send(blob);
+                }).catch(function(){
+                  next();
+                });
+                
+              });
             } else {
               
               res.setHeader('Content-Type', mimeType.lookup(path));

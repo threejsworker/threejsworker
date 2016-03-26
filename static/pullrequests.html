@@ -39,11 +39,11 @@
             var setPullrequests = function(pullrequests){
                 $table.bootstrapTable({data: pullrequests});
                 data = pullrequests;
-                updateData("All")
+                updateData("Open")
             };
             
             var examplesFormatter = function(id) {
-                return "<a href='/viewpullrequest.html#" + id + "'>Goto Examples</a>";
+                return "<table><tbody><tr><th><a href='/viewpullrequest.html#" + id + "'>Examples</a></th></tr><tr><th><a href='/viewpullrequest.html#" + id + "'>Unit Tests</a></th></tr><tbody></table>";
             };
         
              function toggle(btn) {
