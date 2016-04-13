@@ -16,11 +16,12 @@
     "express": "^4.13.3",
     "mime-types": "^2.1.7",
     "mkdirp": "^0.5.1",
-    "nodegit": "^0.11.9",
+    "nodegit": "^0.12.1",
     "request": "^2.62.0",
     "rmdir": "^1.1.0",
+    "segfault-handler": "^1.0.0",
     "sqlite3": "^3.1.0",
-    "uglify-js": "^2.4.24"
+    "uglify-js": "^2.6.2"
   },
   "devDependencies": {
     "bower": "^1.5.3"

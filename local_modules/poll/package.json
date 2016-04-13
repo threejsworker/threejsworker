@@ -1,6 +1,6 @@
 {
   "name": "bluebird-poll",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a poller for bluebird",
   "main": "index.js",
   "repository": "",

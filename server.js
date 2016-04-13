@@ -1,8 +1,9 @@
 require("bluebird").longStackTraces();
 
+//var SegfaultHandler = require('segfault-handler');
 var config = require("./config");
 var express = require('express');
-var path = require('path');
+//var path = require('path');
 var mimeType = require("mime-types");
 var app = express();
 
@@ -127,4 +128,26 @@ require("./lib/init").then(function(){
       require("./lib/jobs/githubdatafetch");
       
   };
+});
+/*
+SegfaultHandler.registerHandler("crash.log", function(signal, address, stack) {
+    console.log(stack);
+    process.exit(1);
+});*/
+
+// first create a generic "terminator"
+var terminator = function(sig){
+    if (typeof sig === "string") {
+       console.log('%s: Received %s - terminating sample app ...',
+                   Date(Date.now()), sig);
+       process.exit(1);
+    }
+    console.log('%s: Node server stopped.', Date(Date.now()) );
+};
+
+// then implement it for every process signal related to exit/quit
+['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
+ 'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
+].forEach(function(element, index, array) {
+    process.on(element, function() { terminator(element); });
 });
